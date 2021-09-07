@@ -1,0 +1,8 @@
+[package]
+name = "fermat_theorem"
+version = "0.1"
+lean_version = "leanprover-community/lean:3.32.1"
+path = "src"
+
+[dependencies]
+mathlib = {git = "https://github.com/leanprover/mathlib", rev = "2ea1650d9491a5036c9911eb740e9333b1f0d71f"}
