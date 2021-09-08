@@ -4,6 +4,7 @@ import data.nat.parity
 import data.nat.factorial
 import tactic.suggest
 import data.real.basic
+import modular
 noncomputable theory
 open_locale classical
 
@@ -210,9 +211,50 @@ begin
   },
   cases hor with two hor,
   {
-    cases h with c h,
-    rw two at h,
-    sorry,
+    have hmod : mod 5 2 1, {use 2, linarith,},
+    have ndiv : ¬ n ∣ 5, {
+      apply mod_neq_0_not_div 5 n,
+      use 1,
+      split,
+      linarith,
+      split,
+      linarith,
+      use 2,
+      linarith,
+    },
+    exfalso,
+    exact ndiv h,
   },
-  sorry,
+  cases hor with three hor,
+  {
+    have ndiv : ¬ 3 ∣ 5, {
+      apply mod_neq_0_not_div 5 3,
+      use 2,
+      split,
+      linarith,
+      use 1,
+      ring,
+    },
+    rw three at h,
+    exfalso,
+    exact ndiv h,
+  },
+  cases hor with four five,
+  {
+    have ndiv : ¬ 4 ∣ 5, {
+      apply mod_neq_0_not_div 5 4,
+      use 1,
+      split,
+      linarith,
+      use 1,
+      ring,
+    },
+    rw four at h,
+    exfalso, 
+    exact ndiv h,
+  },
+  {
+    right,
+    exact five,
+  },
 end
