@@ -183,3 +183,36 @@ begin
   intro h,
   linarith,
 end
+
+theorem prime_5 : nat.prime 5 :=
+begin
+  split,
+  linarith,
+  intros n h,
+  have h5 : 5 ≠ 0, {linarith,},
+  have hl : n ≤ 5, {exact leq _ _ h5 h,},
+  have hor : n=0∨n=1∨n=2∨n=3∨n=4∨n=5, {
+    rw [leq_succ n 4, leq_succ n 3, leq_succ n 2, leq_succ n 1, leq_succ_0 n] at hl,
+    tauto,
+  },  
+  cases hor with zero hor,
+  {
+    exfalso,
+    cases h with c hc,
+    rw zero at hc,
+    have hzero : 5 = 0, {linarith,},
+    exact h5 hzero,
+  },
+  cases hor with one hor,
+  {
+    left,
+    exact one,
+  },
+  cases hor with two hor,
+  {
+    cases h with c h,
+    rw two at h,
+    sorry,
+  },
+  sorry,
+end
