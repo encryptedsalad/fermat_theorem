@@ -11,9 +11,8 @@ def mod (a b c : ℕ) := c < b ∧ ∃ (d : ℕ), d * b + c = a
 /- 
   Main theorem of this file. Used in the prime number file in order to check for primes faster
 -/
-theorem mod_neq_0_not_div (a b : ℕ) : (∃ (c : ℕ), c ≠ 0 ∧ mod a b c) ↔ ¬ b ∣ a :=
+theorem mod_neq_0_not_div (a b : ℕ) : (∃ (c : ℕ), c ≠ 0 ∧ mod a b c) → ¬ b ∣ a :=
 begin
-  split,
   intros h div,
   cases h with c hc,
   have hl := hc.left,
@@ -37,8 +36,4 @@ begin
       ...  = b           : by rw mul_one,
   },
   linarith,
-  contrapose!,
-  intro h,
-  sorry,
-
   end 
