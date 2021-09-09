@@ -103,6 +103,56 @@ begin
   exact ha,
 end
 
+
+/-
+  This theorem shows that you only need to check the prime factors up to 
+  the square root of p in order to demonstrate that p is prime.  
+-/
+theorem check_leq_square_root (n p : ℕ) : n*n > p → 
+    (nat.prime p ↔ (2 ≤ p ∧ ∀ m < n, m ∣ p → m = 1 ∨ m = p)) :=
+begin
+  intro h, split, intro prime, split,
+  exact prime.left, intro m,
+  have each := prime.right,
+  specialize each m, intros leq div,
+  cases each div with one p,
+  left, exact one,
+  right, exact p,
+
+  intro hyp, split,
+  exact hyp.left, intro m,
+  have hl : m < n ∨ m ≥ n, {exact lt_or_ge m n,},
+  cases hl with le geq,
+  have hyp := hyp.right,
+  specialize hyp m,
+  exact hyp le,
+  intro div,
+  cases div with c hc,
+  have le : c < n, {
+    by_contradiction H,
+    push_neg at H,
+    have contradict : p > p, {
+      calc p = m * c : hc
+        ...  ≥ n * n : mul_le_mul' geq H
+        ...  > p     : h,
+    },
+    linarith,
+  },
+  have hyp := hyp.right,
+  specialize hyp c,
+  have div : c ∣ p, {use m, rw mul_comm, exact hc,},
+  have or := hyp le div,
+  cases or with one pe,
+  right,
+  rw [one, mul_one] at hc,
+  rw hc, -- "exact" didnt work here, since we have p=m but needed m=p.
+
+  left,
+  rw pe at hc,
+  
+
+end
+
 theorem prime_2 : nat.prime 2 := 
 begin
   split, linarith,
@@ -124,6 +174,7 @@ end
 
 theorem prime_3 : nat.prime 3 := 
 begin
+  unfold nat.prime,
   split, linarith,
   intros m hm,
   have hl : m ≤ 3, {
