@@ -149,8 +149,12 @@ begin
 
   left,
   rw pe at hc,
-  
 
+  -- these last three lines are really ugly and only establish injectivity of mult.
+  -- probably at some point clean this up, but for now this works. 
+  have hneq : p ≠ 0, {linarith,},
+  have hc : m * p = 1 * p, {linarith,},
+  exact (mul_left_inj' hneq).1 hc,
 end
 
 theorem prime_2 : nat.prime 2 := 
