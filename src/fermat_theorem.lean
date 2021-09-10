@@ -8,9 +8,9 @@ import modular
 noncomputable theory
 open_locale classical
 
-/- we solve this by guess and check, by demonstrating that the only numbers
-    that we need to check are 0, 1, and 2, and then checking them. It ended up being
-    more difficult to demonstrate that we only need to check 0, 1, and 2 than I thought.  
+/-
+  This file gives some theorems and lemmas for demonstrating that a number is prime,
+  along with some small examples. 
 -/
 
 
@@ -46,6 +46,7 @@ begin
   exact leq_succ a 0,
 end
 
+-- delete
 theorem leq_2_iff (a : ℕ): a ≤ 2 → a = 0 ∨ a = 1 ∨ a = 2 := 
 begin 
   induction a,
@@ -76,6 +77,7 @@ begin
   linarith,
 end
 
+-- delete
 theorem leq_3_iff (a : ℕ): a ≤ 3 → a = 0 ∨ a = 1 ∨ a = 2 ∨ a = 3 := 
 begin
   rw [leq_succ a 2, leq_succ a 1, leq_succ_0 a],
@@ -108,7 +110,7 @@ end
   This theorem shows that you only need to check the prime factors up to 
   the square root of p in order to demonstrate that p is prime.  
 -/
-theorem check_leq_square_root (n p : ℕ) : n*n > p → 
+theorem prime_check_le_square_root (n p : ℕ) : n*n > p → 
     (nat.prime p ↔ (2 ≤ p ∧ ∀ m < n, m ∣ p → m = 1 ∨ m = p)) :=
 begin
   intro h, split, intro prime, split,
@@ -145,11 +147,9 @@ begin
   cases or with one pe,
   right,
   rw [one, mul_one] at hc,
-  rw hc, -- "exact" didnt work here, since we have p=m but needed m=p.
-
+  rw hc, -- "exact" didnt work here, since we have p=m but needed m=p. 
   left,
   rw pe at hc,
-
   -- these last three lines are really ugly and only establish injectivity of mult.
   -- probably at some point clean this up, but for now this works. 
   have hneq : p ≠ 0, {linarith,},

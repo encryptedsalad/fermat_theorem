@@ -27,8 +27,7 @@ begin
   },
   have hee : (e-d) = 0 ∨ (e-d) ≥ 1, {exact (e - d).eq_zero_or_pos,},
   cases hee with zero one,
-  rw zero at hg,
-  rw mul_zero at hg,
+  rw [zero,mul_zero] at hg,
   exact hl hg,
   have hee : c ≥ b, {
     calc c = b * (e - d) : hg
@@ -36,4 +35,4 @@ begin
       ...  = b           : by rw mul_one,
   },
   linarith,
-  end 
+end 

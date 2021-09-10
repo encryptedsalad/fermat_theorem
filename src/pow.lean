@@ -43,3 +43,5 @@ begin
     ... = power a (b * c + b)               : by rw power_add a (b * c) b
     ... = power a (b * (c + 1))             : rfl,
 end
+
+
