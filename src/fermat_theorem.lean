@@ -13,7 +13,7 @@ open_locale classical
   along with some small examples. 
 -/
 
-
+namespace nat
 
 
 /-
@@ -27,12 +27,12 @@ begin
   intro h,
   cases lt_or_eq_of_le h with le eq,
   left,
-  exact nat.lt_succ_iff.mp le,
+  exact lt_succ_iff.mp le,
   right,
   exact eq,
   intro h,
   cases h with leq suc,
-  exact nat.le_succ_of_le leq,
+  exact le_succ_of_le leq,
   exact (eq.symm suc).ge,
 end 
 
@@ -42,7 +42,7 @@ end
 -/
 lemma leq_succ_0 (a : ℕ) : a ≤ 1 ↔ a = 0 ∨ a = 1 := 
 begin
-  rw ← nat.le_zero_iff,
+  rw ← le_zero_iff,
   exact leq_succ a 0,
 end
 
@@ -56,7 +56,7 @@ begin
   intro h,
   have hi : a_n = 0 ∨ a_n = 1 ∨ a_n = 2, {
     have h₂ : a_n ≤ 2, {
-      calc a_n ≤ a_n.succ : nat.le_succ a_n
+      calc a_n ≤ a_n.succ : le_succ a_n
         ...    ≤ 2        : h,
     },
     exact a_ih h₂,
@@ -64,11 +64,11 @@ begin
   cases hi with a b,
   right,
   left,
-  exact congr_arg nat.succ a,
+  exact congr_arg succ a,
   cases b with c d,
   right,
   right,
-  exact congr_arg nat.succ c,
+  exact congr_arg succ c,
   have h₃ : a_n.succ > 2, {
     calc a_n.succ > a_n : lt_add_one a_n
      ...          = 2   : d,
@@ -111,7 +111,7 @@ end
   the square root of p in order to demonstrate that p is prime.  
 -/
 theorem prime_check_le_square_root (n p : ℕ) : n*n > p → 
-    (nat.prime p ↔ (2 ≤ p ∧ ∀ m < n, m ∣ p → m = 1 ∨ m = p)) :=
+    (prime p ↔ (2 ≤ p ∧ ∀ m < n, m ∣ p → m = 1 ∨ m = p)) :=
 begin
   intro h, split, intro prime, split,
   exact prime.left, intro m,
@@ -122,9 +122,9 @@ begin
   right, exact p,
 
   intro hyp, split,
-  exact hyp.left, intro m,
-  have hl : m < n ∨ m ≥ n, {exact lt_or_ge m n,},
-  cases hl with le geq,
+  exact hyp.left, 
+  intro m,
+  cases lt_or_ge m n with le geq,
   have hyp := hyp.right,
   specialize hyp m,
   exact hyp le,
@@ -157,7 +157,7 @@ begin
   exact (mul_left_inj' hneq).1 hc,
 end
 
-theorem prime_2 : nat.prime 2 := 
+theorem prime_2 : prime 2 := 
 begin
   split, linarith,
   intros m h,
@@ -176,9 +176,9 @@ begin
   exact b,
 end
 
-theorem prime_3 : nat.prime 3 := 
+theorem prime_3 : prime 3 := 
 begin
-  unfold nat.prime,
+  unfold prime,
   split, linarith,
   intros m hm,
   have hl : m ≤ 3, {
@@ -215,7 +215,7 @@ begin
       exact h₂,
     },
     have h₄ : ¬(even 3), {
-      rw←nat.odd_iff_not_even,
+      rw←odd_iff_not_even,
       exact h₁,
     },
     exact h₄ h₃,
@@ -224,9 +224,9 @@ begin
   exact three,
 end
 
-theorem not_prime_4 : ¬ nat.prime 4 := 
+theorem not_prime_4 : ¬ prime 4 := 
 begin
-  unfold nat.prime,
+  unfold prime,
   push_neg,
   intro h,
   use 2,
@@ -240,7 +240,7 @@ begin
   linarith,
 end
 
-theorem prime_5 : nat.prime 5 :=
+theorem prime_5 : prime 5 :=
 begin
   split,
   linarith,
@@ -313,3 +313,5 @@ begin
     exact five,
   },
 end
+
+end nat
